@@ -1,8 +1,8 @@
 import os
+import time
 
 import numpy as np
 from scipy.signal import convolve
-import time
 
 
 def update(grid):
