@@ -1,36 +1,12 @@
-import os
-import time
-
 import numpy as np
+from numpy._typing import ArrayLike
 from scipy.signal import convolve
 
 
-def update(grid):
-    neighbors = convolve(in1=grid, in2=[[1, 1, 1], [1, 0, 1], [1, 1, 1]], mode="same")
+def update(grid: ArrayLike):
+    window = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+    neighbors = convolve(in1=grid, in2=window, mode="same")
 
     return ((grid == 0) & (neighbors == 3)) | (
         (grid == 1) & (np.isin(neighbors, [2, 3]))
     )
-
-
-def print_grid(grid):
-    print("\n".join(["".join(["x" if cell else " " for cell in row]) for row in grid]))
-
-
-if __name__ == "__main__":
-    grid = np.array(
-        [
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 1, 1, 1, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-        ]
-    )
-
-    print_grid(grid)
-    while True:
-        time.sleep(1)
-        os.system("clear")
-        grid = update(grid)
-        print_grid(grid)
